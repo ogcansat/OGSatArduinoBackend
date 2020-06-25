@@ -1,0 +1,4 @@
+version 3:
+	remove delay on end of loop -> increase delay in radio done blok
+	change the line: 1. send to raspberry 2. delay 3. update screen of arduino
+	added con side bars on screen with time and gps location
