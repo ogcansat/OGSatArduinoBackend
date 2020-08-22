@@ -25,6 +25,7 @@
 
 #include <RFM69.h>			 // include RFM69 library
 #include <SPI.h>
+#include <Servo.h>
 
 // Local
 #define PC_BAUDRATE     	56700
@@ -104,6 +105,9 @@ bool isSdOk = true;
 bool isRadioOk = true;
 bool isGpsConnected = true;
 
+Servo myservo;
+int pos = 0;
+
 void setup()
 {
   Serial.begin(PC_BAUDRATE);
@@ -159,6 +163,8 @@ void setup()
   }
 
   pinMode(D13_led_pin, OUTPUT);
+
+  myservo.attach(A0);
 }
 
 void loop()
@@ -268,4 +274,10 @@ void loop()
   }
 
   idCounter ++;
+
+  for(pos = 0; pos <= 180; pos += 1) //je od úhlu 0 do úhlu 180
+  {
+    myservo.write(pos);  //natočení motoru na aktuální úhel
+    delay(15);           //chvilka čekání než se motor natočí
+  }
 }
