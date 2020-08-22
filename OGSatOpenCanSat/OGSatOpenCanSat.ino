@@ -27,6 +27,8 @@
 #include <SPI.h>
 #include <Servo.h>
 
+#include <Wire.h>
+
 // Local
 #define PC_BAUDRATE     	56700
 #define MS_DELAY 		0  // Number of milliseconds between data sending and LED signalization
@@ -77,6 +79,10 @@ typedef struct
   int16_t rssi;
 } messageOut;
 
+const int MPU_addr=0x68;
+// inicializace proměnných, do kterých se uloží data
+int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
+
 messageOut data; //create the struct variable
 
 // create object 'bme' from the library, which will
@@ -110,6 +116,13 @@ int pos = 0;
 
 void setup()
 {
+
+  Wire.begin();
+  Wire.beginTransmission(MPU_addr);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
+  
   Serial.begin(PC_BAUDRATE);
 
   // wait for the Arduino serial (on your PC) to connect
@@ -165,10 +178,36 @@ void setup()
   pinMode(D13_led_pin, OUTPUT);
 
   myservo.attach(A0);
+
+  
 }
 
 void loop()
 {
+  Wire.beginTransmission(MPU_addr);
+  // zápis do registru ACCEL_XOUT_H
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  // vyzvednutí dat z 14 registrů
+  Wire.requestFrom(MPU_addr,14,true);
+  AcX=Wire.read()<<8|Wire.read();    
+  AcY=Wire.read()<<8|Wire.read();
+  AcZ=Wire.read()<<8|Wire.read();
+  Tmp=Wire.read()<<8|Wire.read();
+  GyX=Wire.read()<<8|Wire.read();
+  GyY=Wire.read()<<8|Wire.read();
+  GyZ=Wire.read()<<8|Wire.read();
+  // výpis surových dat z proměnných na sériovou linku
+  Serial.print("AcX = "); Serial.print(AcX);
+  Serial.print(" | AcY = "); Serial.print(AcY);
+  Serial.print(" | AcZ = "); Serial.print(AcZ);
+  // přepočtení teploty dle datasheetu
+  Serial.print(" | Temp = "); Serial.print(Tmp/340.00+36.53);
+  Serial.print(" | GyX = "); Serial.print(GyX);
+  Serial.print(" | GyY = "); Serial.print(GyY);
+  Serial.print(" | GyZ = "); Serial.println(GyZ);
+  delay(500);
+  
   data.messageId = idCounter;
 
   Serial.println("MessageId = " + static_cast<String>(data.messageId));
@@ -275,9 +314,12 @@ void loop()
 
   idCounter ++;
 
+if ((GyZ > 300) || (GyZ < -300))
+{
   for(pos = 0; pos <= 180; pos += 1) //je od úhlu 0 do úhlu 180
   {
     myservo.write(pos);  //natočení motoru na aktuální úhel
     delay(15);           //chvilka čekání než se motor natočí
   }
+}
 }
