@@ -33,7 +33,7 @@ class OcsStorage
 	  int16_t rssi;
 	} message;
 
-	void Update(message income, uint8_t screenNum, bool con);
+	void Update(message income, uint8_t screenNum, float data[], String bpej[]);
 
 	float getTemp();
 

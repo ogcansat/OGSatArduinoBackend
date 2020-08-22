@@ -13,6 +13,7 @@ class OcsGraphics
 	void drawHomescreen();
 	void drawRightScreen();
 	void drawLeftScreen();
+	void drawBPEJscreen();
 
 	void drawBackground();
 
@@ -29,8 +30,18 @@ class OcsGraphics
 	void drawCon(bool con);
 	void drawConSideBars(bool con);
 
-	void drawMessageId(uint16_t messageId);
+	void drawLightBS(float light);
+	void drawTempBS(float temp);
+	void drawHumBS(float hum);
+	void drawPressBS(float press);
+	void drawAltBS(float alt);
+	void drawSoilBS(float soil);
 
+	void drawBPEJ(String bpej);
+	void drawDistrict(String district);
+	void drawPlant(String plant);
+
+	void drawMessageId(uint16_t messageId);
 	void drawHumidity(float humidity);
 	void drawLongitude(float longitude);
 	void drawLatitude(float latitude);

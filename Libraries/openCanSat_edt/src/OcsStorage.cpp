@@ -22,7 +22,7 @@ OcsStorage::message OcsStorage::getActualData()
 	return this->actualData;
 }
 
-void OcsStorage::Update(message income, uint8_t screenNum, bool con)
+void OcsStorage::Update(message income, uint8_t screenNum, float data[], String bpej[])
 {
 	if(screenNum == 1)
 	{
@@ -62,7 +62,7 @@ void OcsStorage::Update(message income, uint8_t screenNum, bool con)
 			checkHumidity(income.humidity_bme280);
 		}
 		ocsDesign.drawMessageId(income.messageId);
-		ocsDesign.drawConSideBars(con);
+		//ocsDesign.drawConSideBars(con);
 	}
 	else if(screenNum == 0)
 	{
@@ -102,20 +102,32 @@ void OcsStorage::Update(message income, uint8_t screenNum, bool con)
 		float power = income.current_mA * loadvoltage;
 
 		ocsDesign.drawPower(power);
-		
-		ocsDesign.drawConSideBars(con);
+		//ocsDesign.drawBPEJ(bpej);		
+
+		//ocsDesign.drawConSideBars(con);
 
 		this->isTransition = true;
 
 	}
 	else if(screenNum == 2)
 	{
-		ocsDesign.drawCon(con);
+
+		//ocsDesign.drawCon(con);
+		ocsDesign.drawLightBS(data[0]);
+		ocsDesign.drawTempBS(data[1]);
+		ocsDesign.drawHumBS(data[2]);
+		ocsDesign.drawPressBS(data[3]);
+		ocsDesign.drawAltBS(data[4]);
+		ocsDesign.drawSoilBS(data[5]);
 		this->isTransition = true;
 	}
-	
+	else if (screenNum == 3){
+		ocsDesign.drawBPEJ(bpej[0]);
+		ocsDesign.drawDistrict(bpej[1]);
+		ocsDesign.drawPlant(bpej[2]);
+		this->isTransition = true;
+	}
 }
-
 // ToDo -10 value size is over the box
 void OcsStorage::checkTemperature(float temp)
 {

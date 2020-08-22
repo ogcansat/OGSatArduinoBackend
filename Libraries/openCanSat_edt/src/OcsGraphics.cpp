@@ -22,6 +22,8 @@ void OcsGraphics::drawLeftScreen()
 	drawFullBox("LON", 81, 22, 35);
 	drawFullBox("LAT", 118, 22, 35);
 
+	//drawFullBox("BPEJ", 81, 22 ,40)
+
 	// NUM OF SATS
 	ucg.setColor(255, 255, 255);
 
@@ -37,9 +39,10 @@ void OcsGraphics::drawLeftScreen()
 
 	ucg.setFont(ucg_font_micro_mf);
 
-	ucg.print("POWER:");
-
+	ucg.print("Power:");
 	ucg.drawRFrame(83, 76, 74, 30, 3);
+
+	
 	// INA219
 
 	ucg.setColor(255, 255, 255);
@@ -55,18 +58,140 @@ void OcsGraphics::drawRightScreen()
 
 	ucg.setColor(17, 30, 108);
 
-	ucg.setFont(ucg_font_inr16_mr);
-
+  // Draw frame
 	ucg.drawBox(2, 10, 156, 103);
-	//ucg.drawBox(140, 110, 40, 18);
+  	ucg.drawBox(0, 110, 40, 18);
+  	ucg.drawBox(140, 110, 40, 18);
 
-	ucg.setColor(255, 255, 255);
+  	drawFullBox("Light (lx)", 5, 22, 74);
 
-	ucg.setPrintPos(10, 45);
-	// Text to print
-	ucg.print("Conditions:");	
+  	drawFullBox("Temp (C)", 81, 22, 74);	
+
+	drawFullBox("Hum (%)", 5, 52, 74);
+
+  	drawFullBox("Press (hPa)", 81, 52, 74);
+
+	drawFullBox("Alt (m)", 5, 82, 74);
+
+  	drawFullBox("Soil", 81, 82, 74);
 
   	this->drawLeftArrow(10, 118);
+}
+
+void OcsGraphics::drawTempBS(float temp)
+{
+
+	
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(temp, 1), 90, 36, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawLightBS(float light)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(light,0), 16, 36, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawPressBS(float press)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(press, 1), 90, 66, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawHumBS(float hum)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(hum,1), 16, 66, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawAltBS(float alt)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(alt, 1), 16, 96, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawSoilBS(float soil)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(soil,0), 90, 96, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
 }
 
 void OcsGraphics::drawHomescreen()
@@ -93,6 +218,58 @@ void OcsGraphics::drawHomescreen()
   ucg.drawRFrame(5, 88, 150, 20, 3);
 
   this->drawRightArrow(141, 118);
+  this->drawLeftArrow(10, 118);
+}
+
+void OcsGraphics::drawPlant(String plant)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(plant), 16, 96, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawBPEJscreen()
+{
+  ucg.setRotate90();
+
+  ucg.setColor(17, 30, 108);
+
+  // Draw frame
+  ucg.drawBox(2, 10, 156, 103);
+  ucg.drawBox(0, 110, 40, 18);
+  ucg.drawBox(140, 110, 40, 18);
+
+  drawFullBox("District", 5, 22, 150);
+
+  drawFullBox("BPEJ", 5, 52, 74);
+
+  drawFullBox("Plant", 5, 82, 150);
+
+/*
+  drawBox(8, 68, 5);
+
+  drawBox(84, 68, 81);
+
+  drawHumidityBox();
+
+  ucg.setColor(255, 255, 255);
+
+  ucg.drawRFrame(5, 88, 150, 20, 3);
+*/
+
+
   this->drawLeftArrow(10, 118);
 }
 
@@ -257,6 +434,7 @@ void OcsGraphics::drawPower(float power)
 	drawData(String(power), 90, 100, ucg_font_7x13B_tf, " mW", 5);
 }
 
+
 void OcsGraphics::drawNumOfSat(uint8_t numOfSat)
 {
 	drawData(String(numOfSat), 113, 69, ucg_font_7x13B_tf, "", 5);
@@ -310,6 +488,44 @@ void OcsGraphics::drawAltitude(float altitude)
 	this->fontB = 108;
 
 	drawData(String(altitude, 1), 90, 36, ucg_font_7x13B_tf, " m", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawDistrict(String district)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(district), 16, 36, ucg_font_7x13B_tf, "", 7);
+
+	this->bgrR = 17;
+	this->bgrG = 30;
+	this->bgrB = 108;
+	this->fontB = 255;
+	this->fontG = 255;
+	this->fontR = 255;
+}
+
+void OcsGraphics::drawBPEJ(String bpej)
+{
+	this->bgrB = 255;
+	this->bgrG = 255;
+	this->bgrR = 255;
+	this->fontR = 17;
+	this->fontG = 30;
+	this->fontB = 108;
+
+	drawData(String(bpej), 16, 66, ucg_font_7x13B_tf, "", 7);
 
 	this->bgrR = 17;
 	this->bgrG = 30;
