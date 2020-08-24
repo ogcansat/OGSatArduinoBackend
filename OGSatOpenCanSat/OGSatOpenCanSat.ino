@@ -183,7 +183,7 @@ void loop()
 
   if(isBmeOk)
   {
-	  data.temperature += bme.readTemperature();
+	  data.temperature += bme.readTemperature() / 1.66037735849;
 	  data.pressure += bme.readPressure() / 100.0F;
 	  data.altitude += bme.readAltitude(SEALEVELPRESSURE_HPA);
 	  data.humidity_bme280 = bme.readHumidity();
